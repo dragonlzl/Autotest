@@ -42,8 +42,8 @@ class testCodemao(unittest.TestCase):
         desired_caps['platformName'] = 'Android'
         desired_caps['platformVersion'] = '5.1.1'
         desired_caps['deviceName'] = '80a8d0db'
-        desired_caps['appPackage'] = 'com.codemao.box'  # APK包名
-        desired_caps['appActivity'] = "com.codemao.box.module.welcome.FirstActivity"#'com.qihoo.util.StartActivity'
+        desired_caps['appPackage'] = 'xxxxxx'  # APK包名
+        desired_caps['appActivity'] = "xxxxxxx"#'com.qihoo.util.StartActivity'
         desired_caps['noReset'] = True
         self.driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
 

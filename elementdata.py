@@ -6,7 +6,14 @@
 包含 控件名对控件按钮的字典
 
 '''
+account = {
 
+    "测试服帐号1":"xxxxxxxx",
+    "测试服密码1":"xxxxxx",
+    "测试服帐号2":"xxxxx",
+    "测试服密码2":"xxx",
+
+}
 
 page_login_element = {
 

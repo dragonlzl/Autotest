@@ -274,7 +274,7 @@ class testCodemao(unittest.TestCase):
             t1 = get_element_text(self.driver, "id", page_zuopin_element["作品详情-作品名"])
             find_click_page(self.driver, "id", page_zuopin_element["作品详情-返回按钮"], "id", page_wode_shoucang_element["我的收藏标题栏"]) #返回
             if element_exist(self.driver, "id", page_zuopin_element["作品列表-作品框"]):
-                self.assertNotEqual(t1.strip(),get_element_text(self.driver, "id", page_zuopin_element["作品列表-作品名"],"作品依然在收藏列表").strip())
+                self.assertNotEqual(t1.strip(),get_element_text(self.driver, "id", page_zuopin_element["作品列表-作品名"].strip()),"作品依然在收藏列表")
             else:
                 assertPage(self.driver, "id", page_wode_shoucang_element["没有内容图片"])
                 print(" 列表为空")
@@ -473,7 +473,7 @@ class testCodemao(unittest.TestCase):
 
             find_click_page(self.driver, "id", page_fabu_element["确定按钮"], "id", page_wode_zuopin_element["未发布页签"])#点击确定删除
 
-            self.assertNotEqual(t1.strip(),get_element_text(self.driver, "id", page_zuopin_element["作品列表-作品名"],"作品依然再未发布列表").strip())
+            self.assertNotEqual(t1.strip(),get_element_text(self.driver, "id", page_zuopin_element["作品列表-作品名"].strip()),"作品依然再未发布列表")
 
             print("删除作品测试完毕")
 

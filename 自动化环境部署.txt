@@ -1,0 +1,7 @@
+1.安装python&pycharm         #写用例
+2.安装jdk                    #使用uiautomatorview
+3.安装android sdk            #使用uiautomatorview
+4.安装appium
+4.1.安装nodejs
+4.2.python目录下配置pip到环境变量的path
+4.3.npm install -g appium 安装appium

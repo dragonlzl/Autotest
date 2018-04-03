@@ -57,8 +57,8 @@ class testCodemao(unittest.TestCase):
         find_click_page(self.driver, "id", page_one_element["我的按钮"], "id", page_wode_element["头像按钮"])
         find_click_page(self.driver, "id", page_wode_element["头像按钮"], "id", page_login_element["登录按钮"])
         find_click_text(self.driver, "id", page_login_element["登录按钮"], "id", page_login_element["确认登录按钮"])
-        find(self.driver, "id",page_login_element["帐号输入框"]).send_keys("18680340380")
-        find(self.driver, "id",page_login_element["密码输入框"]).send_keys("123456")
+        find(self.driver, "id",page_login_element["帐号输入框"]).send_keys(account["测试服帐号1"])
+        find(self.driver, "id",page_login_element["密码输入框"]).send_keys(account["测试服密码1"])
         find_click_page(self.driver, "id", page_login_element["确认登录按钮"], "id", page_wode_element["退出登录按钮"])
 
         print("登录测试完毕")
@@ -130,25 +130,35 @@ class testCodemao(unittest.TestCase):
 
         find_click_page(self.driver, "id", page_one_element["热门页签"], "id", page_zuopin_element["作品列表-作品框"])
         find_click_page(self.driver, "id", page_zuopin_element["作品列表-作品名"], "id",page_zuopin_element["作品详情-作品名"])
+
         find_click_page(self.driver, "id", page_zuopin_element["作品详情-分享"], "id", page_zuopin_element["作品详情-分享到"])
 
         find(self.driver, "x", "//android.widget.TextView[contains(@text,'微信好友')]").click()  # 分享方式其中一个
-        find_click_page(self.driver,"id",page_fenxiang_element["微信登录框"])
-        find_click_page(self.driver, "id", page_fenxiang_element["微信返回按钮"])
+        assertPage(self.driver,"id",page_fenxiang_element["微信标题栏"])
+        #find_click_page(self.driver,"id",page_fenxiang_element["微信登录框"])
+        self.driver.press_keycode(4)
+        self.driver.press_keycode(4)
         print("未登录时微信好友跳转完成")
 
+        find_click_page(self.driver, "id", page_zuopin_element["作品详情-分享"], "id", page_zuopin_element["作品详情-分享到"])
         find(self.driver, "x", "//android.widget.TextView[contains(@text,'朋友圈')]").click()  # 分享方式其中一个
-        find_click_page(self.driver, "id", page_fenxiang_element["微信登录框"])
-        find_click_page(self.driver, "id", page_fenxiang_element["微信返回按钮"])
+        assertPage(self.driver, "id", page_fenxiang_element["微信标题栏"])
+        #find_click_page(self.driver, "id", page_fenxiang_element["微信登录框"])
+        self.driver.press_keycode(4)
+        self.driver.press_keycode(4)
         print("未登录时微信朋友圈跳转完成")
 
+        find_click_page(self.driver, "id", page_zuopin_element["作品详情-分享"], "id", page_zuopin_element["作品详情-分享到"])
         find(self.driver, "x", "//android.widget.TextView[contains(@text,'QQ')]").click()  # 分享方式其中一个
-        find_click_page(self.driver, "id", page_fenxiang_element["QQ登录标题栏"])
+        assertPage(self.driver, "id", page_fenxiang_element["QQ登录标题栏"])
+        #find_click_page(self.driver, "id", page_fenxiang_element["QQ登录标题栏"])
         self.driver.press_keycode(4)
         print("未登录时QQ跳转完成")
 
+        find_click_page(self.driver, "id", page_zuopin_element["作品详情-分享"], "id", page_zuopin_element["作品详情-分享到"])
         find(self.driver, "x", "//android.widget.TextView[contains(@text,'QQ空间')]").click()  # 分享方式其中一个
-        find_click_page(self.driver, "id", page_fenxiang_element["QQ登录标题栏"])
+        assertPage(self.driver, "id", page_fenxiang_element["QQ登录标题栏"])
+        #find_click_page(self.driver, "id", page_fenxiang_element["QQ登录标题栏"])
         self.driver.press_keycode(4)
         print("未登录时QQ空间跳转完成")
 
@@ -521,8 +531,8 @@ class testCodemao(unittest.TestCase):
 
         find(self.driver, "id", page_one_element["创作按钮"]).click()
         find_click_text(self.driver, "id", page_login_element["登录按钮"], "id", page_login_element["确认登录按钮"])
-        find(self.driver, "id", page_login_element["帐号输入框"]).send_keys("18680340380")
-        find(self.driver, "id", page_login_element["密码输入框"]).send_keys("123456")
+        find(self.driver, "id", page_login_element["帐号输入框"]).send_keys(account["测试服帐号1"])
+        find(self.driver, "id", page_login_element["密码输入框"]).send_keys(account["测试服密码1"])
         find(self.driver, "id", page_login_element["确认登录按钮"]).click()
         self.driver.implicitly_wait(15)
         self.driver.find_element_by_accessibility_id("事件").click()
@@ -540,7 +550,7 @@ def suite_case(): #部分用例
 
      suite = unittest.TestSuite()
      #suite.addTest(testCodemao("test015_logout"))
-     suite.addTest(testCodemao("test016_chuangjian_login"))
+     suite.addTest(testCodemao("test004_fenxiang"))
      return suite
 
 if __name__ == '__main__':
@@ -559,7 +569,7 @@ if __name__ == '__main__':
     runner = HTMLTestRunner.HTMLTestRunner(stream=fp,title=u'自动化测试报告,测试结果如下：',description=u'用例执行情况：')
 
     # 4、调用add_case函数返回值
-    runner.run(all_case())
+    runner.run(suite_case())
     fp.close()
     end = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
     print("自动化测试结束:",end)

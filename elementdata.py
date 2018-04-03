@@ -7,6 +7,19 @@
 
 '''
 
+account = {
+
+    "测试服帐号1":"18680340380",
+    "测试服密码1":"18680340380",
+    "测试服帐号2":"000000",
+    "测试服密码2":"0",
+    "正式服帐号1":"18680340380",
+    "正式服密码1":"123456",
+    "正式服帐号2":"000000",
+    "正式服密码2":"0"
+
+}
+
 page_login_element = {
 
     "返回按钮":"com.codemao.box:id/back_frame",
@@ -206,7 +219,7 @@ page_fenxiang_element = {
     # "":"",
     "微信标题栏":"android:id/text1",
     "微信登录框":"com.tencent.mm:id/k5",
-    "微信返回按钮":"com.tencent.mm:id/hy",
+    "微信返回按钮":"com.tencent.mm:id/hp",#"com.tencent.mm:id/hy"  #不同的收机居然不同
     "QQ登录标题栏":"com.tencent.mobileqq:id/name",
     "已登录QQ页面-发送到标题栏":"com.tencent.mobileqq:id/ivTitleName",
     "发送到-取消按钮": "com.tencent.mobileqq:id/ivTitleBtnRightText",

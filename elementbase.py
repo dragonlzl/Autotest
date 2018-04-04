@@ -135,7 +135,7 @@ def get_element_text(driver,by,value):
         try:
             t1 = find(driver,by, value).text
         except Exception:
-            print(value," 无文本")
+            print("找不到控件：",value)
     return t1
 
 def element_exist(driver,by,value):

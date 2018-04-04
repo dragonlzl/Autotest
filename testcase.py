@@ -20,7 +20,7 @@ from common import *
 #report_path = os.path.join(os.getcwd(), 'report')
 
 
-def getImage(function):
+def getImage(function):        #装饰器，用作用例执行失败时截图
     #@wraps(function)
     def get_ErrImage(self, *args, **kwargs):
         pass_3 = 1
@@ -42,8 +42,8 @@ class testCodemao(unittest.TestCase):
         desired_caps['platformName'] = 'Android'
         desired_caps['platformVersion'] = '5.1.1'
         desired_caps['deviceName'] = '80a8d0db'
-        desired_caps['appPackage'] = 'xxxxxx'  # APK包名
-        desired_caps['appActivity'] = "xxxxxxx"#'com.qihoo.util.StartActivity'
+        desired_caps['appPackage'] = 'xxxxx'  # APK包名
+        desired_caps['appActivity'] = "xxxxxxxxxxxxx"#'com.qihoo.util.StartActivity'
         desired_caps['noReset'] = True
         self.driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
 
@@ -57,8 +57,8 @@ class testCodemao(unittest.TestCase):
         find_click_page(self.driver, "id", page_one_element["我的按钮"], "id", page_wode_element["头像按钮"])
         find_click_page(self.driver, "id", page_wode_element["头像按钮"], "id", page_login_element["登录按钮"])
         find_click_text(self.driver, "id", page_login_element["登录按钮"], "id", page_login_element["确认登录按钮"])
-        find(self.driver, "id",page_login_element["帐号输入框"]).send_keys(account["测试服帐号1"])
-        find(self.driver, "id",page_login_element["密码输入框"]).send_keys(account["测试服密码1"])
+        find(self.driver, "id",page_login_element["帐号输入框"]).send_keys(account["正式服帐号1"])
+        find(self.driver, "id",page_login_element["密码输入框"]).send_keys(account["正式服密码1"])
         find_click_page(self.driver, "id", page_login_element["确认登录按钮"], "id", page_wode_element["退出登录按钮"])
 
         print("登录测试完毕")
@@ -268,16 +268,21 @@ class testCodemao(unittest.TestCase):
         find_click_page(self.driver, "id", page_one_element["我的按钮"], "id", page_wode_element["我的收藏按钮"])  # 我的
 
         find_click_text(self.driver, "id", page_wode_element["我的收藏按钮"], "id",page_wode_shoucang_element["我的收藏标题栏"])  # 我的收藏
+
         if element_exist(self.driver, "id", page_zuopin_element["作品列表-作品框"]):
-            find_click_text(self.driver, "id", page_zuopin_element["作品列表-作品名"], "id",page_zuopin_element["作品详情-作品名"])
-            find_click_page(self.driver, "id", page_zuopin_element["作品详情-收藏/取消收藏"], "id",page_zuopin_element["作品详情-作品名"])
-            t1 = get_element_text(self.driver, "id", page_zuopin_element["作品详情-作品名"])
-            find_click_page(self.driver, "id", page_zuopin_element["作品详情-返回按钮"], "id", page_wode_shoucang_element["我的收藏标题栏"]) #返回
-            if element_exist(self.driver, "id", page_zuopin_element["作品列表-作品框"]):
-                self.assertNotEqual(t1.strip(),get_element_text(self.driver, "id", page_zuopin_element["作品列表-作品名"].strip()),"作品依然在收藏列表")
+            if len(get_element_text(self.driver,"id",page_zuopin_element["作品列表-发布时间"]).strip()) > 2:
+                find_click_text(self.driver, "id", page_zuopin_element["作品列表-作品名"], "id",page_zuopin_element["作品详情-作品名"])
+                find_click_page(self.driver, "id", page_zuopin_element["作品详情-收藏/取消收藏"], "id",page_zuopin_element["作品详情-作品名"])
+                t1 = get_element_text(self.driver, "id", page_zuopin_element["作品详情-作品名"])
+                find_click_page(self.driver, "id", page_zuopin_element["作品详情-返回按钮"], "id", page_wode_shoucang_element["我的收藏标题栏"]) #返回
+                if element_exist(self.driver, "id", page_zuopin_element["作品列表-作品框"]):
+                    self.assertNotEqual(t1.strip(),get_element_text(self.driver, "id", page_zuopin_element["作品列表-作品名"].strip()),"作品依然在收藏列表")
+                    print("123")
+                else:
+                    assertPage(self.driver, "id", page_wode_shoucang_element["没有内容图片"])
+                    print(" 列表为空")
             else:
-                assertPage(self.driver, "id", page_wode_shoucang_element["没有内容图片"])
-                print(" 列表为空")
+                print("该作品已取消发布")
 
         else:
             assertPage(self.driver,"id",page_wode_shoucang_element["没有内容图片"])
@@ -531,8 +536,8 @@ class testCodemao(unittest.TestCase):
 
         find(self.driver, "id", page_one_element["创作按钮"]).click()
         find_click_text(self.driver, "id", page_login_element["登录按钮"], "id", page_login_element["确认登录按钮"])
-        find(self.driver, "id", page_login_element["帐号输入框"]).send_keys(account["测试服帐号1"])
-        find(self.driver, "id", page_login_element["密码输入框"]).send_keys(account["测试服密码1"])
+        find(self.driver, "id", page_login_element["帐号输入框"]).send_keys(account["正式服帐号1"])
+        find(self.driver, "id", page_login_element["密码输入框"]).send_keys(account["正式服密码1"])
         find(self.driver, "id", page_login_element["确认登录按钮"]).click()
         self.driver.implicitly_wait(15)
         self.driver.find_element_by_accessibility_id("事件").click()
@@ -549,8 +554,8 @@ def all_case(): #全用例
 def suite_case(): #部分用例
 
      suite = unittest.TestSuite()
-     #suite.addTest(testCodemao("test015_logout"))
-     suite.addTest(testCodemao("test004_fenxiang"))
+     #suite.addTest(testCodemao("test004_fenxiang"))
+     suite.addTest(testCodemao("test013_gerenye"))
      return suite
 
 if __name__ == '__main__':
@@ -569,7 +574,7 @@ if __name__ == '__main__':
     runner = HTMLTestRunner.HTMLTestRunner(stream=fp,title=u'自动化测试报告,测试结果如下：',description=u'用例执行情况：')
 
     # 4、调用add_case函数返回值
-    runner.run(suite_case())
+    runner.run(suite_case())  #参数为选择全部还是选择单独
     fp.close()
     end = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
     print("自动化测试结束:",end)

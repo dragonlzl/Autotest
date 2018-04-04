@@ -53,7 +53,6 @@ class testCodemao(unittest.TestCase):
     @getImage #使用装饰器
     def test000_login(self):
 
-        self.driver.wait_activity('com.codemao.box.module.welcome.MainActivity', 10)
         find_click_page(self.driver, "id", page_one_element["我的按钮"], "id", page_wode_element["头像按钮"])
         find_click_page(self.driver, "id", page_wode_element["头像按钮"], "id", page_login_element["登录按钮"])
         find_click_text(self.driver, "id", page_login_element["登录按钮"], "id", page_login_element["确认登录按钮"])

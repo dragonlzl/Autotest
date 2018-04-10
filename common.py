@@ -40,3 +40,25 @@ def new_dir(path = r"D:\python36\autotest\report"):             #获取指定路
     lists.sort(key=lambda fn:os.path.getmtime(path + "\\" + fn))#按时间排序
     dir_new = os.path.join(path,lists[-1])                     #获取最新的文件保存到file_new
     return dir_new
+
+def get_find_zb(driver):
+
+    size = driver.get_window_size()
+    width = size["width"]
+    height = size["height"]
+
+    width_zb = (470 * width) / 540
+    height_zb = (935 * height) / 960
+
+    return [(width_zb, height_zb)]
+
+def get_return_zb(driver):
+
+    size = driver.get_window_size()
+    width = size["width"]
+    height = size["height"]
+
+    width_zb = (42 * width) / 540
+    height_zb = (75 * height) / 960
+
+    return [(width_zb, height_zb)]

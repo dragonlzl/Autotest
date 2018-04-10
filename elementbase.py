@@ -17,7 +17,7 @@ class assertElement(unittest.TestCase):
         try:
             find(driver, by, value)
         except:
-            getScreenShot(driver)
+            #getScreenShot(driver)
             pass_1 = 0
         #try:
         self.assertTrue(pass_1,"页面不正确")
@@ -29,7 +29,7 @@ class assertElement(unittest.TestCase):
         try:
             self.assertNotEqual(t1,"")
         except AssertionError as e:
-            getScreenShot(driver)
+            #getScreenShot(driver)
             pass_1 = 0
         self.assertTrue(pass_1, "控件text为空")
         pass_2 = 1
@@ -54,13 +54,13 @@ def assertImage(parm):
 def find(driver,by,value):
 
     if by == 'x':
-        driver.implicitly_wait(10)
+        driver.implicitly_wait(15)
         return driver.find_element_by_xpath(value)
     elif by == 'id': #resource-id
-        driver.implicitly_wait(10)
+        driver.implicitly_wait(15)
         return driver.find_element_by_id(value)
     elif by == "zb":
-        driver.implicitly_wait(10)
+        driver.implicitly_wait(15)
         return driver.tap(value)  #坐标直接包含点击事件
     else:
         return '请输入定位方式'
@@ -85,7 +85,7 @@ def find_click_text(driver,by,value,by2,assertvalue=""):
 
     elif by == 'id': #resource-id
 
-        driver.implicitly_wait(10)
+        driver.implicitly_wait(15)
         driver.find_element_by_id(value).click()
 
         assertElement().assertText(driver,by2,assertvalue,text)
@@ -110,18 +110,18 @@ def find_click_page(driver, by, value, by2, assertvalue=""):
     '''
 
     if by == 'x':
-        driver.implicitly_wait(10)
+        driver.implicitly_wait(15)
         driver.find_element_by_xpath(value).click()
         assertElement().assertPage(driver, by2, assertvalue)
 
     elif by == 'id':  # resource-id
 
-        driver.implicitly_wait(10)
+        driver.implicitly_wait(15)
         driver.find_element_by_id(value).click()
         assertElement().assertPage(driver,by2, assertvalue)
 
     elif by == "zb":
-        driver.implicitly_wait(10)
+        driver.implicitly_wait(15)
         driver.tap(value)  # 坐标直接包含点击事件
         assertElement().assertPage(driver, by2, assertvalue)
     else:
@@ -130,23 +130,31 @@ def find_click_page(driver, by, value, by2, assertvalue=""):
 
 
 def get_element_text(driver,by,value):
+
     t1 = ""
+
     if by == "id":
         try:
             t1 = find(driver,by, value).text
         except Exception:
-            print("找不到控件：",value)
+            print("找不到控件:",value)
     return t1
 
 def element_exist(driver,by,value):
+
     isexist = 1
+
     try:
         find(driver,by,value)
 
     except:
+
         isexist = 0
+        print(value,"控件不存在")
 
     return isexist
+
+
 
 
 

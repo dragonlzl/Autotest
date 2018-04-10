@@ -28,7 +28,7 @@ def getImage(function):        #装饰器，用作用例执行失败时截图
             function(self, *args, **kwargs)
         except Exception as e:
             pass_3 = 0
-            getScreenShot(self.driver)
+            getScreenShot(self.driver,function.__name__)
             print(e)
 
         assertImage(pass_3)
@@ -40,20 +40,57 @@ class testCodemao(unittest.TestCase):
     def setUp(self):
         desired_caps = {}
         desired_caps['platformName'] = 'Android'
-        desired_caps['platformVersion'] = '5.1.1'
-        desired_caps['deviceName'] = '80a8d0db'
-        desired_caps['appPackage'] = 'xxxxx'  # APK包名
-        desired_caps['appActivity'] = "xxxxxxxxxxxxx"#'com.qihoo.util.StartActivity'
+        desired_caps['platformVersion'] = '5.1.1'# '5.1.1'#'4.4.4'
+        desired_caps['deviceName'] = '80a8d0db'#''80a8d0db' '9fb08572'
+        desired_caps['appPackage'] = 'xxxxxx'  # APK包名
+        desired_caps['appActivity'] = "xxxxxxxxx"#'com.qihoo.util.StartActivity'
         desired_caps['noReset'] = True
         self.driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
 
     def tearDown(self):
         self.driver.close_app()
 
-    @getImage #使用装饰器
+    @getImage
+    def checklogin(self):
+
+        find_click_page(self.driver, "id", page_one_element["我的按钮"], "id", page_wode_element["个人信息编辑按钮"])
+
+        if element_exist(self.driver, "id", page_wode_element["退出登录按钮"]):
+
+            find_click_page(self.driver, "id", page_wode_element["退出登录按钮"], "id", page_wode_element["退出弹窗标题栏"])  # 退出
+
+            find_click_page(self.driver, "id", page_wode_element["退出按钮"], "id", page_wode_element["头像按钮"])
+
+            self.assertFalse(element_exist(self.driver, "id", page_wode_element["退出登录按钮"]),"退出登录不成功")
+
+    def get_find_zb(self):         #分辨率坐标比例
+
+        size = self.driver.get_window_size()
+        width = size["width"]
+        height = size["height"]
+
+        width_zb = (470 * width) / 540
+        height_zb = (935 * height) / 960
+
+        return [(width_zb, height_zb)]
+
+    def get_return_zb(self):      #分辨率坐标比例
+
+        size = self.driver.get_window_size()
+        width = size["width"]
+        height = size["height"]
+
+        width_zb = (42 * width) / 540
+        height_zb = (75 * height) / 960
+
+        return [(width_zb, height_zb)]
+
+    @getImage  #使用装饰器
     def test000_login(self):
 
-        find_click_page(self.driver, "id", page_one_element["我的按钮"], "id", page_wode_element["头像按钮"])
+        self.checklogin()
+
+        find_click_page(self.driver, "id", page_one_element["我的按钮"], "id", page_wode_element["头像按钮"])     #前面是需要操作的目标，后面的是是否操作成功的判断标志
         find_click_page(self.driver, "id", page_wode_element["头像按钮"], "id", page_login_element["登录按钮"])
         find_click_text(self.driver, "id", page_login_element["登录按钮"], "id", page_login_element["确认登录按钮"])
         find(self.driver, "id",page_login_element["帐号输入框"]).send_keys(account["正式服帐号1"])
@@ -92,9 +129,9 @@ class testCodemao(unittest.TestCase):
 
         find_click_page(self.driver, "id", page_one_element["搜索按钮"], "id", page_search_element["搜索内容"])  # 搜索
         find(self.driver, "id", page_search_element["搜索内容"]).send_keys("123")
-        #driver.press_keycode(84)
-        #self.assertIn("123", get_element_text(driver, "id", "com.codemao.box:id/name_tv").strip())
-        find_click_page(self.driver, "zb", [(495,920)], "id",page_search_element["搜索内容"])
+
+        find_click_page(self.driver, "zb", self.get_find_zb(), "id",page_search_element["搜索内容"])
+
         if element_exist(self.driver, "id", page_zuopin_element["作品列表-作品名"]):
             find_click_text(self.driver, "id", page_zuopin_element["作品列表-作品名"], "id", page_zuopin_element["作品详情-作品名"])
             find_click_page(self.driver, "id", page_zuopin_element["作品详情-返回按钮"], page_search_element["搜索内容"])
@@ -177,11 +214,11 @@ class testCodemao(unittest.TestCase):
         find_click_page(self.driver, "id", page_wode_set_element["清除缓存按钮"], "id", page_wode_set_element["提示弹窗标题栏"])
         find_click_page(self.driver, "id", page_wode_set_element["确定按钮"], "id", page_wode_set_element["清除缓存按钮"])  # 确定
 
-        find_click_page(self.driver, "zb", [(42, 75)], "id", page_wode_element["我的收藏按钮"])#返回
+        find_click_page(self.driver, "zb", self.get_return_zb(), "id", page_wode_element["我的收藏按钮"])#返回
         print("我的-设置测试完毕")
 
         find_click_page(self.driver, "id", page_wode_element["关于编程猫按钮"], "id", page_wode_guanyu_element["关于标题栏"]) #关于
-        find_click_page(self.driver, "zb", [(42, 75)], "id", page_wode_element["我的收藏按钮"])  # 返回
+        find_click_page(self.driver, "zb", self.get_return_zb(), "id", page_wode_element["我的收藏按钮"])  # 返回
         print("我的-关于测试完毕")
 
     @getImage
@@ -257,7 +294,7 @@ class testCodemao(unittest.TestCase):
 
         find_click_page(self.driver, "id", page_wode_xiugai_element["保存按钮"], "id", page_wode_xiugai_element["保存按钮"]) #点击保存
 
-        find_click_page(self.driver, "zb", [(42, 75)], "id", page_wode_element["我的收藏按钮"])#返回
+        find_click_page(self.driver, "zb", self.get_return_zb(), "id", page_wode_element["我的收藏按钮"])#返回
 
         print("测试个人信息更改完毕")
 
@@ -320,7 +357,7 @@ class testCodemao(unittest.TestCase):
             print(" 列表为空")
         print("我的作品-未发布测试完毕")
 
-        find_click_text(self.driver, "zb", [(42,75)], "id", page_wode_element["我的收藏按钮"])#返回
+        find_click_text(self.driver, "zb", self.get_return_zb(), "id", page_wode_element["我的收藏按钮"])#返回
         print("我的作品测试完毕")
 
     @getImage
@@ -343,7 +380,7 @@ class testCodemao(unittest.TestCase):
 
             find(self.driver, "x", "//android.widget.TextView[contains(@text,'RPG')]").click()  # 标签有很多这是其中一个
 
-            find_click_page(self.driver, "id", page_fabu_element["发布按钮"], "id", page_zuopin_element["作品详情-作者栏"]) #确认发布
+            find_click_page(self.driver, "id", page_fabu_element["发布按钮"], "id", page_zuopin_element["作品详情-作者栏"])  #确认发布
             print("发布成功")
             t1 = get_element_text(self.driver,"id",page_zuopin_element["作品详情-作品名"])
 
@@ -353,7 +390,7 @@ class testCodemao(unittest.TestCase):
 
             self.assertEqual(t1.strip(),get_element_text(self.driver,"id",page_zuopin_element["作品列表-作品名"]).strip()) #判断是否已经在已发布列表中
 
-            find_click_page(self.driver, "zb", [(42, 75)], "id", page_wode_element["我的收藏按钮"])#返回
+            find_click_page(self.driver, "zb", self.get_return_zb(), "id", page_wode_element["我的收藏按钮"])#返回
 
             find_click_page(self.driver, "id", page_one_element["游戏按钮"], "id",page_one_element["创作按钮"])  #回到首页
 
@@ -410,7 +447,7 @@ class testCodemao(unittest.TestCase):
 
             self.assertEqual(t1.strip(), get_element_text(self.driver, "id", page_zuopin_element["作品列表-作品名"]).strip())#判断是否已经在已发布列表中修改成功
 
-            find_click_page(self.driver, "zb", [(42, 75)], "id", page_wode_element["我的收藏按钮"])  # 返回
+            find_click_page(self.driver, "zb", self.get_return_zb(), "id", page_wode_element["我的收藏按钮"])  # 返回
 
             find_click_page(self.driver, "id", page_one_element["游戏按钮"], "id",page_one_element["创作按钮"])  # 回到首页
 
@@ -534,6 +571,8 @@ class testCodemao(unittest.TestCase):
 
         find_click_page(self.driver, "id", page_wode_element["退出按钮"], "id", page_wode_element["头像按钮"])
 
+        self.assertFalse(element_exist(self.driver, "id", page_wode_element["退出登录按钮"]), "退出登录不成功")
+
         print("退出登录测试完毕")
 
     @getImage
@@ -551,6 +590,7 @@ class testCodemao(unittest.TestCase):
 
 def all_case(): #全用例
     case_path = getpath()
+    #case_path = lambda:os.path.join(os.getcwd())
     discover = unittest.defaultTestLoader.discover(case_path, pattern="test*.py", top_level_dir=None)
 
     print(discover)
@@ -559,8 +599,8 @@ def all_case(): #全用例
 def suite_case(): #部分用例
 
      suite = unittest.TestSuite()
-     #suite.addTest(testCodemao("test004_fenxiang"))
-     suite.addTest(testCodemao("test013_gerenye"))
+     suite.addTest(testCodemao("test002_find"))
+     suite.addTest(testCodemao("test005_page_wode"))
      return suite
 
 if __name__ == '__main__':

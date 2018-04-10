@@ -15,7 +15,7 @@ def getpath():         #获取用例的执行路径
     return case_path
 
 
-def getScreenShot(driver,test_method_name = ""):       #截图方法，图片利用方法名+时间来命名，截图地址会放在最新的报告文件夹中，因为每次运行用例，都会先有文件夹再有截图
+def getScreenShot(driver,test_method_name = ""):       #截图方法，图片利用方法名+时间来命名，截图地址会放在最新的报告文件夹中，因为每次运行用例，都会先创建文件夹再有截图
 
     now = getTime()
     path = new_dir()

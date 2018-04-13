@@ -7,11 +7,11 @@ case、报告、截图要用到的文件操作方法、时间获取方法、路�
 
 '''
 
-import time,os
+import time,os,sys
 
 def getpath():         #获取用例的执行路径
 # 当前文件路径
-    case_path = os.path.join(os.getcwd())
+    case_path = os.path.join(sys.path[0])
     return case_path
 
 
@@ -28,7 +28,7 @@ def getTime():   #获取时间，命名要用该时间
 def reportpath():        #每次运行，都会创建一个最新的文件夹，并返回地址，用于存放报告
 
     now = getTime()
-    path = os.path.join(os.getcwd(), 'report') + "\\report" + now
+    path = os.path.join(sys.path[0], 'report') + "\\report" + now
     os.makedirs(path)
 
     return path

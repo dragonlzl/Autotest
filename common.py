@@ -8,6 +8,8 @@ case、报告、截图要用到的文件操作方法、时间获取方法、路�
 '''
 
 import time,os,sys
+#from elementbase import *
+import elementbase
 
 def getpath():         #获取用例的执行路径
 # 当前文件路径
@@ -28,7 +30,9 @@ def getTime():   #获取时间，命名要用该时间
 def reportpath():        #每次运行，都会创建一个最新的文件夹，并返回地址，用于存放报告
 
     now = getTime()
+    #path = os.path.join(os.getcwd(), 'report') + "\\report" + now
     path = os.path.join(sys.path[0], 'report') + "\\report" + now
+    print("path is ",path)
     os.makedirs(path)
 
     return path
@@ -41,7 +45,7 @@ def new_dir(path = r"D:\python36\autotest\report"):             #获取指定路
     dir_new = os.path.join(path,lists[-1])                     #获取最新的文件保存到file_new
     return dir_new
 
-def get_find_zb(driver):
+def get_find_zb(driver):                  #查找按钮坐标比例计算
 
     size = driver.get_window_size()
     width = size["width"]
@@ -52,7 +56,7 @@ def get_find_zb(driver):
 
     return [(width_zb, height_zb)]
 
-def get_return_zb(driver):
+def get_return_zb(driver):                   #返回按钮坐标比例计算
 
     size = driver.get_window_size()
     width = size["width"]
@@ -62,3 +66,18 @@ def get_return_zb(driver):
     height_zb = (75 * height) / 960
 
     return [(width_zb, height_zb)]
+
+def getImage(function):        #装饰器，用作用例执行失败时截图
+    #@wraps(function)
+    def get_ErrImage(self, *args, **kwargs):
+        pass_3 = 1
+        try:
+            function(self,*args, **kwargs)
+        except Exception as e:
+            pass_3 = 0
+            getScreenShot(self.driver,function.__name__)
+            print(e)
+
+        elementbase.assertImage(pass_3)
+
+    return get_ErrImage

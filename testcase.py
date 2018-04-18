@@ -13,6 +13,7 @@ import unittest
 import HTMLTestRunner
 from elementdata import *
 from common import *
+import runcase
 
 # 用例路径
 #case_path = os.path.join(os.getcwd())
@@ -20,20 +21,20 @@ from common import *
 #report_path = os.path.join(os.getcwd(), 'report')
 
 
-def getImage(function):        #装饰器，用作用例执行失败时截图
-    #@wraps(function)
-    def get_ErrImage(self, *args, **kwargs):
-        pass_3 = 1
-        try:
-            function(self, *args, **kwargs)
-        except Exception as e:
-            pass_3 = 0
-            getScreenShot(self.driver,function.__name__)
-            print(e)
-
-        assertImage(pass_3)
-
-    return get_ErrImage
+# def getImage(function):        #装饰器，用作用例执行失败时截图
+#     #@wraps(function)
+#     def get_ErrImage(self, *args, **kwargs):
+#         pass_3 = 1
+#         try:
+#             function(self, *args, **kwargs)
+#         except Exception as e:
+#             pass_3 = 0
+#             getScreenShot(self.driver,function.__name__)
+#             print(e)
+#
+#         assertImage(pass_3)
+#
+#     return get_ErrImage
 
 class testCodemao(unittest.TestCase):
 
@@ -42,18 +43,18 @@ class testCodemao(unittest.TestCase):
         desired_caps['platformName'] = 'Android'
         desired_caps['platformVersion'] = '5.1.1'# '5.1.1'#'4.4.4'
         desired_caps['deviceName'] = '80a8d0db'#''80a8d0db' '9fb08572'
-        desired_caps['appPackage'] = 'xxxxx'  # APK包名
-        desired_caps['appActivity'] = "xxxxxxxxxx"#'com.qihoo.util.StartActivity'
+        desired_caps['appPackage'] = 'xxxxxx'  # APK包名
+        desired_caps['appActivity'] = "xxxxxxxxxxxx"#'com.qihoo.util.StartActivity'
         desired_caps['noReset'] = True
         self.driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
 
     def tearDown(self):
         self.driver.close_app()
 
-    @getImage
+
     def checklogin(self):
 
-        find_click_page(self.driver, "id", page_one_element["我的按钮"], "id", page_wode_element["个人信息编辑按钮"])
+        find_click_page(self.driver, "id", page_one_element["我的按钮"], "id", page_wode_element["头像按钮"])
 
         if element_exist(self.driver, "id", page_wode_element["退出登录按钮"]):
 
@@ -67,6 +68,8 @@ class testCodemao(unittest.TestCase):
     def test000_login(self):
 
         self.checklogin()
+
+        #find_click_page(self.driver, "id", page_one_element["我的按钮"], "id", page_wode_element["个人信息编辑按钮"])
 
         find_click_page(self.driver, "id", page_one_element["我的按钮"], "id", page_wode_element["头像按钮"])     #前面是需要操作的目标，后面的是是否操作成功的判断标志
         find_click_page(self.driver, "id", page_wode_element["头像按钮"], "id", page_login_element["登录按钮"])
@@ -566,20 +569,20 @@ class testCodemao(unittest.TestCase):
         self.driver.press_keycode(4)
         print("创作登录测试完毕")
 
-def all_case(): #全用例
-    case_path = getpath()
-    #case_path = lambda:os.path.join(os.getcwd())
-    discover = unittest.defaultTestLoader.discover(case_path, pattern="test*.py", top_level_dir=None)
-
-    print(discover)
-    return discover
-
-def suite_case(): #部分用例
-
-     suite = unittest.TestSuite()
-     suite.addTest(testCodemao("test002_find"))
-     suite.addTest(testCodemao("test005_page_wode"))
-     return suite
+# def all_case(): #全用例
+#     case_path = getpath()
+#     #case_path = lambda:os.path.join(os.getcwd())
+#     discover = unittest.defaultTestLoader.discover(case_path, pattern="test*.py", top_level_dir=None)
+#
+#     print(discover)
+#     return discover
+#
+# def suite_case(): #部分用例
+#
+#      suite = unittest.TestSuite()
+#      suite.addTest(testCodemao("test002_find"))
+#      suite.addTest(testCodemao("test005_page_wode"))
+#      return suite
 
 if __name__ == '__main__':
 
@@ -597,7 +600,7 @@ if __name__ == '__main__':
     runner = HTMLTestRunner.HTMLTestRunner(stream=fp,title=u'自动化测试报告,测试结果如下：',description=u'用例执行情况：')
 
     # 4、调用add_case函数返回值
-    runner.run(suite_case())  #参数为选择全部还是选择单独
+    runner.run(runcase.suite_case())  #参数为选择全部还是选择单独
     fp.close()
     end = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
     print("自动化测试结束:",end)
